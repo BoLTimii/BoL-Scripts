@@ -12,7 +12,7 @@ local Script_Version = "0.02"
 if myHero.charName ~= "Akali" then return end
 
 --Message Broadcast Function--
-function Broadcast(Msg)
+function Messages(Msg)
 	print("<font color =\"#000000\">[</font><font color=\"#31B404\">Akali</font><font color =\"#000000\">]</font><font color =\"#BDBDBD\"> "..Msg..".</font>")
 end
 
