@@ -7,7 +7,6 @@
 --Script Information--
 local Script_Author = "Timii"
 local Script_Version = "0.02"
-local Script_UpdateDate = "06/25/2014"
 
 --Champion Check--
 if myHero.charName ~= "Akali" then return end
@@ -19,6 +18,7 @@ end
 
 --Auto Update Variables--
 local AutoUpdate = true
+local ServerData
 local UPDATE_FILE_PATH = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
 local UPDATE_NAME = "Akali - As Balance Dictates"
 local UPDATE_HOST = "raw.github.com"
@@ -27,25 +27,30 @@ local UPDATE_FILE_PATH = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
 local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
 
 --Auto Update Function--
-if AutoUpdate then
-	local ServerInfo = GetWebResult(UPDATE_HOST, UPDATE_PATH)
-	if ServerInfo then
-		local ServerVersion = string.match(ServerInfo, "local Script_Version = \"%d+.%d+\"")
-		ServerVersion = string.match(ServerVersion and ServerVersion or "", "%d+.%d+")
-		if ServerVersion then
-			ServerVersion = tonumber(ServerVersion)
-			if ServerVersion ~= tonumber(Script_Version) then
-				local ServerUpdateTime = string.match(ServerInfo, "local Script_UpdateDate = \"%d+/%d+/%d+\"")
-				ServerUpdateTime = string.match(ServerUpdateTime and ServerUpdateTime or "", "%d+/%d+/%d+")
-				Broadcast("Your script is outdated. The script is automatically updating, please wait..")
-				Broadcast("New Script Info - Date: <font color = \"#B40404\">"..ServerUpdateTime.."</font> Version: <font color = \"#B40404\">v"..ServerVersion.."</font>")
-				DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function ()
-				Broadcast("Successfully updated. Please reload the script for changes to take effect") end) end, 3)
-			 else
-                Broadcast("Your script is already updated to <font color = \"#B40404\">v"..ServerVersion.."</font>")
+function AutoUpdt()
+	if AutoUpdate then
+		ServerData = GetWebResult(UPDATE_HOST, UPDATE_PATH)
+		if ServerData then
+			local ServerVersion = string.match(ServerData, "ScriptVersion = \"%d.%d%d\"")
+			ServerVersion = string.match(ServerVersion and ServerVersion or "", "%d.%d%d")
+			if ServerVersion then
+				if ScriptVersion ~= ServerVersion then
+					Messages("<font color=\"#848484\"> Script is not updated. Current Version: </font> <font color=\"#8A0808\">"..ScriptVersion.."</font> <font color=\"#848484\">Latest Version: </font> <font color=\"#8A0808\">"..ServerVersion.."</font><font color=\"#848484\">.</font>")
+					Messages("<font color=\"#848484\">Now Updating Script to </font><font color=\"#8A0808\">v."..ServerVersion.."</font><font color=\"#848484\">. Do not press [F9].</font>")
+					DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function ()
+					Messages("<font color=\"#848484\">Succesfully Updated </font><font color=\"#FFBF00\">"..UPDATE_NAME.."</font> <font color=\"#848484\"> to </font><font color=\"#8A0808\">v."..ServerVersion.."</font><font color=\"#848484\">.</font>") end) end, 3)
+					Messages("<font color=\"#848484\">Please reload the script for changes to take effect.</font>")
+				else 
+					Messages("<font color=\"#848484\">Your script is updated to the latest version</font> <font color=\"#8A0808\">v"..ScriptVersion.."</font><font color=\"#848484\">.</font>")
+				end
 			end
 		else
-			Broadcast("An error has occurred while attempting to download version info")
+			Messages("<font color=\"#848484\">An error occured while checking version information.</font>")
 		end
 	end
+end
+
+--On Load Function--
+function OnLoad()
+	AutoUpdt()
 end
