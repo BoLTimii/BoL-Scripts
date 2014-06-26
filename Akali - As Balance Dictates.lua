@@ -15,6 +15,7 @@ if myHero.charName ~= "Akali" then return end
 
 --Auto Update Variables--
 local AutoUpdate = true
+local AutoUpdateComplete = true
 local UPDATE_FILE_PATH = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
 local UPDATE_NAME = "Akali - As Balance Dictates"
 local UPDATE_HOST = "raw.github.com"
@@ -28,25 +29,44 @@ function Broadcast(Msg)
 end
 
 --Auto Update Function--
-if AutoUpdate then
-	local ServerInfo = GetWebResult(UPDATE_HOST, UPDATE_PATH)
-	if ServerInfo then
-		local ServerVersion = string.match(ServerInfo, "local Script_Version = \"%d+.%d+\"")
-		ServerVersion = string.match(ServerVersion and ServerVersion or "", "%d+.%d+")
-		if ServerVersion then
-			ServerVersion = tonumber(ServerVersion)
-			if ServerVersion ~= tonumber(Script_Version) then
-				local ServerUpdateTime = string.match(ServerInfo, "local Script_UpdateDate = \"%d+/%d+/%d+\"")
-				ServerUpdateTime = string.match(ServerUpdateTime and ServerUpdateTime or "", "%d+/%d+/%d+")
-				Broadcast("Your script is outdated. The script is automatically updating, please wait..")
-				Broadcast("New Script Info - Date: <font color = \"#B40404\">"..ServerUpdateTime.."</font> Version: <font color = \"#B40404\">v"..ServerVersion.."</font>")
-				DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function ()
-				Broadcast("Successfully updated. Please reload the script for changes to take effect") end) end, 3)
-			 else
-                Broadcast("Your script is already updated to <font color = \"#B40404\">v"..ServerVersion.."</font>")
+function AUpdate()
+	if AutoUpdate then
+		local ServerInfo = GetWebResult(UPDATE_HOST, UPDATE_PATH)
+		if ServerInfo then
+			local ServerVersion = string.match(ServerInfo, "local Script_Version = \"%d+.%d+\"")
+			ServerVersion = string.match(ServerVersion and ServerVersion or "", "%d+.%d+")
+			if ServerVersion then
+				ServerVersion = tonumber(ServerVersion)
+				if ServerVersion ~= tonumber(Script_Version) then
+					local ServerUpdateTime = string.match(ServerInfo, "local Script_UpdateDate = \"%d+/%d+/%d+\"")
+					ServerUpdateTime = string.match(ServerUpdateTime and ServerUpdateTime or "", "%d+/%d+/%d+")
+					Broadcast("Your script is outdated. The script is automatically updating, please wait..")
+					Broadcast("New Script Info - Date: <font color = \"#B40404\">"..ServerUpdateTime.."</font> Version: <font color = \"#B40404\">v"..ServerVersion.."</font>")
+					DelayAction(
+						function() 
+							DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, 
+							function ()
+								Broadcast("Successfully updated. Please reload the script for changes to take effect") 
+								AutoUpdateComplete = true
+							end) 
+						end, 
+					3)
+				 else
+					Broadcast("Your script is already updated to <font color = \"#B40404\">v"..ServerVersion.."</font>")
+					AutoUpdateComplete = true
+				end
+			else
+				Broadcast("An error has occurred while attempting to download version info")
+				AutoUpdateComplete = true
 			end
-		else
-			Broadcast("An error has occurred while attempting to download version info")
 		end
+	end
+end
+
+--On Load Function--
+function OnLoad()
+	AUpdate()
+	if AutoUpdateComplete then
+		Broadcast(UPDATE_NAME.."<font color = \"#B40404\">v"..Script_Version.."</font> successfully loaded"
 	end
 end
