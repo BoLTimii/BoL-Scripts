@@ -67,6 +67,6 @@ end
 function OnLoad()
 	AUpdate()
 	if AutoUpdateComplete then
-		Broadcast(UPDATE_NAME.."<font color = \"#B40404\">v"..Script_Version.."</font> successfully loaded"
+		Broadcast(UPDATE_NAME.."<font color = \"#B40404\">v"..Script_Version.."</font> successfully loaded")
 	end
 end
