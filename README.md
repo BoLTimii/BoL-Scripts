@@ -1,4 +1,4 @@
-#Welcome to Timii's Repository!
+#Welcome to Timii's Repository
 
 ##FAQs
 ####What are the .lua scripts?
