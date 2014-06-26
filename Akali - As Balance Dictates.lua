@@ -6,7 +6,7 @@
 
 --Script Information--
 local Script_Author = "Timii"
-local Script_Version = "0.02"
+local Script_Version = "0.01"
 local Script_UpdateDate = "06/25/2014"
 
 --Champion Check--
@@ -41,7 +41,11 @@ if AutoUpdate then
 				Broadcast("New Script Info - Date: <font color = \"#B40404\">"..ServerUpdateTime.."</font> Version: <font color = \"#B40404\">v"..ServerVersion.."</font>")
 				DelayAction(function() DownloadFile(Update_URL, Update_FilePath, function ()
 				Broadcast("Successfully updated Please reload the script for changes to take effect.") end) end, 3)
+			 else
+                Broadcast("Your script is updated. <font color = \"#B40404\">v"..ServerVersion.."</font>.")
 			end
+		else
+			Broadcast("An error has occurred while attempting to download version info.")
 		end
 	end
 end
