@@ -47,9 +47,7 @@ function AUpdate()
 							DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, 
 							function ()
 								Broadcast("Successfully updated. Please reload the script for changes to take effect") 
-								DelayAction(
-									AutoUpdateComplete = true, 
-								3)
+								AutoUpdateComplete = true
 							end) 
 						end, 
 					3)
@@ -69,6 +67,9 @@ end
 function OnLoad()
 	AUpdate()
 	if AutoUpdateComplete then
-		Broadcast(UPDATE_NAME.."<font color = \"#B40404\"> v"..Script_Version.."</font> successfully loaded")
+		DelayAction(
+		function()
+			Broadcast(UPDATE_NAME.."<font color = \"#B40404\"> v"..Script_Version.."</font> successfully loaded") end,
+		3)
 	end
 end
