@@ -14,21 +14,21 @@ if myHero.charName ~= "Akali" then return end
 
 --Message Broadcast Function--
 function Broadcast(Msg)
-	print("<font color =\"#000000\">[</font><font color=\"#31B404\">Akali</font><font color =\"#000000\">]</font><font color =\"#424242\">"..Msg..".</font>")
+	print("<font color =\"#000000\">[</font><font color=\"#31B404\">Akali</font><font color =\"#000000\">]</font><font color =\"#BDBDBD\"> "..Msg..".</font>")
 end
 
 --Auto Update Variables--
 local AutoUpdate = true
-local Update_FilePath = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
-local Update_ScriptName = "Akali - As Balance Dictates"
-local Update_WebHost = "raw.github.com"
-local Update_HostPath = "/BoLTimii/BoL-Scripts/master/Akali%20-%20As%20Balance%20Dictates.lua?chunk="..math.random(1, 1000)
-local Update_FilePath = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
-local Update_URL = "https://"..Update_WebHost..Update_HostPath
+local UPDATE_FILE_PATH = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
+local UPDATE_NAME = "Akali - As Balance Dictates"
+local UPDATE_HOST = "raw.github.com"
+local UPDATE_PATH = "/BoLTimii/BoL-Scripts/master/Akali%20-%20As%20Balance%20Dictates.lua?chunk="..math.random(1, 1000)
+local UPDATE_FILE_PATH = SCRIPT_PATH.."Akali - As Balance Dictates.lua"
+local UPDATE_URL = "https://"..UPDATE_HOST..UPDATE_PATH
 
 --Auto Update Function--
 if AutoUpdate then
-	local ServerInfo = GetWebResult(Update_WebHost, Update_HostPath)
+	local ServerInfo = GetWebResult(UPDATE_HOST, UPDATE_PATH)
 	if ServerInfo then
 		local ServerVersion = string.match(ServerInfo, "local Script_Version = \"%d+.%d+\"")
 		ServerVersion = string.match(ServerVersion and ServerVersion or "", "%d+.%d+")
@@ -37,15 +37,15 @@ if AutoUpdate then
 			if ServerVersion ~= tonumber(Script_Version) then
 				local ServerUpdateTime = string.match(ServerInfo, "local Script_UpdateDate = \"%d+/%d+/%d+\"")
 				ServerUpdateTime = string.match(ServerUpdateTime and ServerUpdateTime or "", "%d+/%d+/%d+")
-				Broadcast("Your script is outdated. The script is automatically updating, please wait...")
+				Broadcast("Your script is outdated. The script is automatically updating, please wait..")
 				Broadcast("New Script Info - Date: <font color = \"#B40404\">"..ServerUpdateTime.."</font> Version: <font color = \"#B40404\">v"..ServerVersion.."</font>")
-				DelayAction(function() DownloadFile(Update_URL, Update_FilePath, function ()
-				Broadcast("Successfully updated Please reload the script for changes to take effect.") end) end, 3)
+				DelayAction(function() DownloadFile(UPDATE_URL, UPDATE_FILE_PATH, function ()
+				Broadcast("Successfully updated. Please reload the script for changes to take effect") end) end, 3)
 			 else
-                Broadcast("Your script is updated. <font color = \"#B40404\">v"..ServerVersion.."</font>.")
+                Broadcast("Your script is already updated to <font color = \"#B40404\">v"..ServerVersion.."</font>")
 			end
 		else
-			Broadcast("An error has occurred while attempting to download version info.")
+			Broadcast("An error has occurred while attempting to download version info")
 		end
 	end
 end
