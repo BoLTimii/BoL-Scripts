@@ -6,7 +6,7 @@
 
 --Script Information--
 local Script_Author = "Timii"
-local Script_Version = "0.01"
+local Script_Version = "0.02"
 local Script_UpdateDate = "06/25/2014"
 
 --Champion Check--
